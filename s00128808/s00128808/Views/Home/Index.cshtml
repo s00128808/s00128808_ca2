@@ -1,0 +1,28 @@
+﻿@model IEnumerable<s00128808.Models.Club>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+<div class="row">
+    <div class="col-md-2">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Clubs</div>
+            <div class="panel-body" style="overflow-x:hidden; height:400px;">
+                @foreach (var item in Model)
+                {
+                    <p>@item.ClubName</p>
+                }
+            </div>
+
+</div>
+</body>
+</html>
