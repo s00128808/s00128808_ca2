@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data;
 using System.Data.Entity;
+using System.ComponentModel.DataAnnotations;
 
 namespace s00128808.Models
 {
@@ -27,12 +28,13 @@ namespace s00128808.Models
            });
            context.Clubs.Add(new Club()
            {
+               ClubID=1,
                ClubName = "Liverpool",
                Position = "5",
                Manager = "Brendan Rodgers",
                Players = new List<Player>
                {
-                   new Player() {PlayerName = "Philippe Coutinho", Position ="Midfielder", Nationality = "Brazilian", Age = "22"},
+                   new Player() { PlayerName = "Philippe Coutinho", Position ="Midfielder", Nationality = "Brazilian", Age = "22"},
                    new Player() {PlayerName = "Steven  Gerrard", Position="Midfielder", Nationality = "English", Age = "34"},
                    new Player() {PlayerName = "Raheem Sterling", Position="Forward", Nationality ="English", Age = "20"}
                },
@@ -40,6 +42,7 @@ namespace s00128808.Models
            });
            context.Clubs.Add(new Club()
            {
+               ClubID = 2,
                ClubName = "Chelsea",
                Position = "1",
                Manager = "José Mourinho",
@@ -53,6 +56,7 @@ namespace s00128808.Models
            });
            context.Clubs.Add(new Club()
            {
+               ClubID = 3,
                ClubName = "West Ham",
                Position = "4",
                Manager = "Sam Allardyce",
@@ -73,7 +77,7 @@ namespace s00128808.Models
 
     public class PremierLeagueDB:DbContext 
     {
-        public int Id { get; set; }
+     
         public DbSet<Club> Clubs { get; set; }
         public DbSet<Player> Players { get; set; }
         public PremierLeagueDB():base("PLdb")
@@ -84,20 +88,23 @@ namespace s00128808.Models
 
     public class Club
     {
+        [Key]
         public int ClubID { get; set; }
         public string ClubName { get; set; }
         public string Position { get; set; }
         public string Manager { get; set; }
-        public virtual List<Player> Players { get; set; }
+        public  List<Player> Players { get; set; }
     }
 
     public class Player
     {
+            [Key]
         public int PlayerID { get; set; }
         public string PlayerName { get; set; }
         public string Age { get; set; }
         public string Position { get; set; }
         public string Nationality { get; set; }
+        public int ClubID { get; set; }
         public Club Club { get; set; }             //Relationship
         
 

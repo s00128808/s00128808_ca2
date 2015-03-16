@@ -23,65 +23,39 @@ namespace s00128808.Controllers
         }
 
         // GET: api/Players/5
-        [ResponseType(typeof(Player))]
-        public IHttpActionResult GetPlayer(int id)
+       
+        public IEnumerable<Player> GetPlayer(int id)
         {
-            Player player = db.Players.Find(id);
-            if (player == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(player);
+            return db.Players.Where(p => p.ClubID == id);
         }
 
         [Route("getplayers/{id:int}")]
-        public dynamic GetPlayerList(int id)
+        public Player GetPlayerList(int id)
         {
             Player player = db.Players.Find(id);
             if (player == null)
             {
-                return NotFound();
+               
             }
 
-            return Ok(new { playerlist = player.PlayerName });
+            return player;
                 
 
         }
 
         // PUT: api/Players/5
+        [HttpPut]
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutPlayer(int id, Player player)
+        public Player GetPlayerDetails(int id)
         {
-            if (!ModelState.IsValid)
+            Player player = db.Players.Find(id);
+            if (player == null)
             {
-                return BadRequest(ModelState);
+
             }
 
-            if (id != player.PlayerID)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(player).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PlayerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
+            return player;
+                
         }
 
         // POST: api/Players

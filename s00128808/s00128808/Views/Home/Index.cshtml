@@ -1,44 +1,117 @@
 ﻿@model IEnumerable<s00128808.Models.Club>
 
-<html>
-<head>
-    <script>
-        $(function () {
-            $('table tr').click(function () {
-                var id = this.id;
-                $.ajax({
-                    type: 'GET',
-                    url: ''
-                })
-            }
-          );
-        });
-    </script>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">Clubs</div>
             <div class="panel-body" style="overflow-x:hidden; height:200px;">
-                <table table-stripped table-condensed">
-                    
-                        @foreach (var item in Model)
-                        {
+                <table id="tblClubs" style="cursor:pointer" table-stripped table-condensed">
 
-                            <tr style="cursor:pointer" id="@item.ClubName"><td>@item.ClubName</td></tr>
-
-                        }
-                  
                 </table>
+
             </div>
 
             </div>
         </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Players</div>
+                <div class="panel-body" style="overflow-x:hidden; height:200px;">
+                    <table id="tblPlayers" style="cursor:pointer" table-stripped table-condensed"></table>
+
+                </div>
+
+            </div>
+        </div>
     </div>
+<div class="row text-center">
+    <h4 id="playerName"style="font-weight:bold"></h4>
+    <p id="nationality"></p>
+    <p id="age"></p>
+    <p id="position"></p>
+</div>
 
-</body>
-</html>
 
+@section scripts
+{
+
+<script>
+    $(function () {
+   
+        $.ajax({
+
+
+          
+            url: "http://localhost:52601/api/Clubs",
+            type: 'GET',
+            dataType: 'json',
+            beforeSend: function () {
+                $('#tblClubs').html('Waiting for API');
+            },
+            success: function (data, textStatus, xhr) {
+
+          
+                $('#tblClubs').html('');
+                $.each(data, function (item) {
+                    $("#tblClubs").append("<tr onclick=listPlayers('" + this['ClubID'] + "')><td>" + this['ClubName'] + "</td></tr>");
+                    console.log(this);
+                });
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                $('#tblClubs').html("Error retrieving data");
+            }
+        });
+    });
+
+    function listPlayers(ClubID) {
+        $.ajax({
+           
+            url: "http://localhost:52601/api/Players/" + ClubID,
+            type: 'GET',
+            dataType: 'json',
+            beforeSend: function () {
+           
+            },
+            success: function (data, textStatus, xhr) {
+                $('#tblPlayers').html('');
+                $.each(data, function (item) {
+                    $("#tblPlayers").append("<tr onclick=showDetails('" + this['PlayerID'] + "')><td>" + this['PlayerName'] + "</td></tr>");
+                  
+                });
+            },
+            error: function () {
+                $('#tblPlayers').text('An error loading Players occurred');
+            }
+        });
+    };
+
+    function showDetails(PlayerID) {
+ 
+        $.ajax({
+
+            url: "http://localhost:52601/api/Players/" + PlayerID,
+            type: 'Put',
+            dataType: 'json',
+            beforeSend: function () {
+
+            },
+            success: function (data, textStatus, xhr) {
+               
+                $('#playerName').html('');
+                $("#playerName").append(data.PlayerName);
+                $('#nationality').html('');
+                $("#nationality").append("Nationality: " + data.Nationality);
+                $('#age').html('');
+                $("#age").append("Age is: " + data.Age);
+                $('#position').html('');
+                $("#position").append("Position: " + data.Position);
+            },
+            error: function () {
+                
+            }
+        });
+    }
+
+    </script>
+    }
