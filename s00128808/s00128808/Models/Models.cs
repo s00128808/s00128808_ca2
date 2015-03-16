@@ -7,7 +7,7 @@ using System.Data.Entity;
 
 namespace s00128808.Models
 {
-    class DBInitialiser : DropCreateDatabaseAlways<PremierLeagueDB>
+    public class DBInitialiser : DropCreateDatabaseAlways<PremierLeagueDB>
     {
         protected override void Seed(PremierLeagueDB context)
         {
@@ -17,12 +17,12 @@ namespace s00128808.Models
                ClubName ="Arsenal",
                Position = "3",
                Manager = "Arsène  Wenger",
-               Players = 
+               Players = new List<Player>
                {
                    new Player() {PlayerName = "Santiago Cazorla", Position ="Midfielder", Nationality = "Spanish", Age = "30"},
                    new Player() {PlayerName = "Alex Oxlade-Chamberlain", Position="Midfielder", Nationality =  "English", Age = "21"},
                    new Player() {PlayerName = "Theo Walcott", Position="Forward", Nationality ="English", Age = "25"}
-               }
+               },
 
            });
            context.Clubs.Add(new Club()
@@ -30,12 +30,12 @@ namespace s00128808.Models
                ClubName = "Liverpool",
                Position = "5",
                Manager = "Brendan Rodgers",
-               Players = 
+               Players = new List<Player>
                {
                    new Player() {PlayerName = "Philippe Coutinho", Position ="Midfielder", Nationality = "Brazilian", Age = "22"},
                    new Player() {PlayerName = "Steven  Gerrard", Position="Midfielder", Nationality = "English", Age = "34"},
                    new Player() {PlayerName = "Raheem Sterling", Position="Forward", Nationality ="English", Age = "20"}
-               }
+               },
 
            });
            context.Clubs.Add(new Club()
@@ -43,12 +43,12 @@ namespace s00128808.Models
                ClubName = "Chelsea",
                Position = "1",
                Manager = "José Mourinho",
-               Players = 
+               Players = new List<Player>
                {
                    new Player() {PlayerName = "Eden Hazard", Position ="Midfielder", Nationality = "Belgium", Age = "24"},
                    new Player() {PlayerName = "Diego Costa", Position="Forward", Nationality =  "Spanish", Age = "26"},
                    new Player() {PlayerName = "Cesc Fábregas", Position="Midfielder", Nationality ="Spanish", Age = "27"}
-               }
+               },
 
            });
            context.Clubs.Add(new Club()
@@ -56,12 +56,12 @@ namespace s00128808.Models
                ClubName = "West Ham",
                Position = "4",
                Manager = "Sam Allardyce",
-               Players = 
+               Players = new List<Player>
                {
                    new Player() {PlayerName = "Enner Valencia", Position ="Forward", Nationality = "Ecuador", Age = "25"},
                    new Player() {PlayerName = "Alexandre Song", Position="Midfielder", Nationality =  "Cameroon", Age = "27"},
                    new Player() {PlayerName = "Diafra Sakho", Position="Forward", Nationality ="Senegal", Age = "26"}
-               }
+               },
 
            });
 
@@ -71,8 +71,9 @@ namespace s00128808.Models
         }
     }
 
-    class PremierLeagueDB:DbContext 
+    public class PremierLeagueDB:DbContext 
     {
+        public int Id { get; set; }
         public DbSet<Club> Clubs { get; set; }
         public DbSet<Player> Players { get; set; }
         public PremierLeagueDB():base("PLdb")
@@ -87,7 +88,7 @@ namespace s00128808.Models
         public string ClubName { get; set; }
         public string Position { get; set; }
         public string Manager { get; set; }
-        public List<Player> Players { get; set; }
+        public virtual List<Player> Players { get; set; }
     }
 
     public class Player

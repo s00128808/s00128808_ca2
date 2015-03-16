@@ -9,14 +9,12 @@ namespace s00128808.Controllers
 {
     public class HomeController : Controller
     {
-        private PremierLeagueDB db = new PremierLeagueDB();
- 
-
+        public PremierLeagueDB db = new PremierLeagueDB();
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            //ViewBag.Title = "Home Page";
 
-            return View(db.Clubs.ToList());
+            return View(db.Clubs);
         }
     }
 }
